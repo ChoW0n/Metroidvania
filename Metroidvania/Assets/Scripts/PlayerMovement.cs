@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public CharacterMovement controller;
     public Animator animator;
 
     public float runSpeed = 40.0f;      //이동 속도 값 설정
@@ -15,14 +16,14 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-        //animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             jump = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             dash = true;
         }
@@ -30,16 +31,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnFall()        //떨어짐 처리
     {
-        //animator.SetBool("IsJumping", true);
+        animator.SetBool("IsJumping", true);
     }
     public void OnLanding()     //바닥에 착지처리 Event
     {
-        //animator.SetBool("IsJumping", false);
+        animator.SetBool("IsJumping", false);
     }
     void FixedUpdate()
     {
         //캐릭터 움직임 구현할 함수
-        //controller.Move(horizontalMove * Time.fixedDeltaTimer, jump, dash)
+        controller.Move(horizontalMove * Time.fixedDeltaTime, jump, dash);
 
         jump = false;
         dash = false;
